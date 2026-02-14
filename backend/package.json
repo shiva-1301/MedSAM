@@ -1,0 +1,30 @@
+{
+  "name": "analyx-backend",
+  "version": "1.0.0",
+  "description": "Drug Scanner Backend with Pharmacy Management",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "create-admin": "node scripts/createAdmin.js",
+    "hash-password": "node scripts/hashPassword.js",
+    "seed-pharmacies": "node scripts/seedPharmacies.js"
+  },
+  "keywords": ["drug-scanner", "pharmacy", "healthcare"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.0.0",
+    "mongoose": "^9.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "node-cron": "^3.0.3",
+    "dotenv": "^16.0.0",
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "express-validator": "^7.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.0"
+  }
+}
