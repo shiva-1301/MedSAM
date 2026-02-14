@@ -34,15 +34,26 @@ const NearbyPharmacies = () => {
   };
 
   // Fetch nearby pharmacies
-  const fetchNearbyPharmacies = async (lat, lng) => {
+  const fetchNearbyPharmacies = async (lat, lng, isBeyond = false, radius = null) => {
     try {
       setLoading(true);
+      const searchRadius = radius !== null ? radius : radiusKm;
       const response = await api.get(
-        `/pharmacy/nearby?lat=${lat}&lng=${lng}&radiusKm=${radiusKm}`
+        `/pharmacy/nearby?lat=${lat}&lng=${lng}&radiusKm=${searchRadius}`
       );
 
       if (response.data.success) {
-        setPharmacies(response.data.data);
+        let results = response.data.data;
+        
+        // Filter to only pharmacies beyond 30km if requested
+        if (isBeyond) {
+          results = results.filter(pharmacy => pharmacy.distance > 30);
+        }
+        
+        // Ensure results are sorted by distance ascending
+        results.sort((a, b) => (a.distance || 0) - (b.distance || 0));
+        
+        setPharmacies(results);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Error fetching nearby pharmacies');
@@ -57,11 +68,18 @@ const NearbyPharmacies = () => {
 
   // Handle radius change
   const handleRadiusChange = (e) => {
-    const newRadius = parseFloat(e.target.value);
+    const value = e.target.value;
+    const isBeyond = value === 'beyond';
+    const newRadius = isBeyond ? 50000 : parseFloat(value);
     setRadiusKm(newRadius);
 
     if (userLocation) {
-      fetchNearbyPharmacies(userLocation.latitude, userLocation.longitude);
+      fetchNearbyPharmacies(
+        userLocation.latitude,
+        userLocation.longitude,
+        isBeyond,
+        newRadius
+      );
     }
   };
 
@@ -109,7 +127,7 @@ const NearbyPharmacies = () => {
                   Search Radius (km)
                 </label>
                 <select
-                  value={radiusKm}
+                  value={radiusKm === 50000 ? 'beyond' : radiusKm}
                   onChange={handleRadiusChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
@@ -118,6 +136,7 @@ const NearbyPharmacies = () => {
                   <option value={15}>15 km</option>
                   <option value={20}>20 km</option>
                   <option value={30}>30 km</option>
+                  <option value="beyond">Beyond 30 km</option>
                 </select>
               </div>
               <div className="flex items-end">
