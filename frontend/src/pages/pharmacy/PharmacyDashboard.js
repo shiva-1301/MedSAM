@@ -60,43 +60,63 @@ const PharmacyDashboard = () => {
   const stats = dashboardData?.stats || {};
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gray-50 md:bg-gradient-to-br md:from-blue-50 md:to-indigo-100 py-4 md:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
         {/* Top Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           {/* Total Medicines */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Total Medicines</p>
-            <h2 className="text-3xl font-bold text-blue-600">{stats.totalMedicines || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Inventory size</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Total Medicines</p>
+                <p className="text-xs text-gray-400 md:hidden">Inventory</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-blue-600">{stats.totalMedicines || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Inventory size</p>
           </div>
 
           {/* Low Stock */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Low Stock</p>
-            <h2 className="text-3xl font-bold text-yellow-600">{stats.lowStockMedicines || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Needs restock</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Low Stock</p>
+                <p className="text-xs text-gray-400 md:hidden">Restock</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-yellow-600">{stats.lowStockMedicines || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Needs restock</p>
           </div>
 
           {/* Out of Stock */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Out of Stock</p>
-            <h2 className="text-3xl font-bold text-red-600">{stats.outOfStockMedicines || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Urgent</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Out of Stock</p>
+                <p className="text-xs text-gray-400 md:hidden">Urgent</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-red-600">{stats.outOfStockMedicines || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Urgent</p>
           </div>
 
           {/* Expiring Soon */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Expiring Soon</p>
-            <h2 className="text-3xl font-bold text-orange-600">{stats.expiringMedicines || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Time-sensitive</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Expiring Soon</p>
+                <p className="text-xs text-gray-400 md:hidden">Alert</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-orange-600">{stats.expiringMedicines || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Time-sensitive</p>
           </div>
         </div>
 
         {/* Two Column Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
           {/* Low Stock Table (2/3 width) */}
-          <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-lg">
+          <div className="lg:col-span-2 bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-6 shadow-sm md:shadow-lg">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-800">Low Stock Medicines</h3>
               <Link to="/pharmacy/stock" className="text-sm text-blue-600 hover:text-blue-700">
@@ -156,8 +176,8 @@ const PharmacyDashboard = () => {
           </div>
 
           {/* Right Column - Expiring Soon (1/3 width) */}
-          <div className="space-y-4">
-            <div className="bg-white rounded-2xl p-5 shadow-lg">
+          <div className="space-y-3 md:space-y-4">
+            <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg">
               <h4 className="text-sm font-semibold text-gray-800 mb-3">Expiring Soon</h4>
               
               {expiringMedicines.length === 0 ? (
@@ -198,7 +218,7 @@ const PharmacyDashboard = () => {
         </div>
 
         {/* Recent Medicines Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
+        <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-6 shadow-sm md:shadow-lg">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold text-gray-800">Recent Medicines Added</h3>
             <Link to="/pharmacy/medicines" className="text-sm text-blue-600 hover:text-blue-700">
@@ -257,8 +277,8 @@ const PharmacyDashboard = () => {
           )}
         </div>
 
-        {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Quick Actions Grid - Footer style on mobile */}
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             to="/pharmacy/medicines/add"
             className="bg-white rounded-xl p-5 hover:shadow-xl transition cursor-pointer shadow-lg group"
@@ -295,6 +315,7 @@ const PharmacyDashboard = () => {
             <p className="text-gray-500 text-xs mt-1">Pharmacy settings</p>
           </Link>
         </div>
+        
       </div>
     </div>
   );

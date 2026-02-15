@@ -15,12 +15,26 @@ const Adherence = () => {
   const [formData, setFormData] = useState({
     medicineName: '',
     dose: '',
+    instruction: 'After meals',
     tabletsPerDose: 1,
     timesPerDay: 1,
     durationDays: 1,
     startDate: new Date().toISOString().split('T')[0],
     reminderTimes: [],
   });
+
+  const instructionOptions = [
+    'Before meals',
+    'After meals',
+    'On an empty stomach',
+    '30 minutes before a meal',
+    'After lunch/dinner',
+    'Avoid taking on empty stomach',
+    'Crush and dissolve in a glass of water',
+    'Can take with water or milk',
+    'Do not take with milk, tea/coffee',
+    'Do not take with grapefruit/juice',
+  ];
 
   const fetchActiveCourses = async () => {
     try {
@@ -71,7 +85,7 @@ const Adherence = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'medicineName' || name === 'dose' || name === 'startDate'
+      [name]: name === 'medicineName' || name === 'dose' || name === 'startDate' || name === 'instruction'
         ? value
         : Number(value),
     }));
@@ -111,6 +125,7 @@ const Adherence = () => {
         setFormData({
           medicineName: '',
           dose: '',
+          instruction: 'After meals',
           tabletsPerDose: 1,
           timesPerDay: 1,
           durationDays: 1,
@@ -144,10 +159,10 @@ const Adherence = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 md:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">Medicine Adherence</h1>
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Medicine Adherence</h1>
           <p className="text-gray-600">Manage courses, reminders, and refills</p>
         </div>
 
@@ -175,8 +190,8 @@ const Adherence = () => {
             </div>
 
             {showAddForm && (
-              <form onSubmit={handleAddCourse} className="mb-6 bg-gray-50 rounded-lg p-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <form onSubmit={handleAddCourse} className="mb-6 bg-gray-50 rounded-lg p-4 md:p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">Medicine Name *</label>
                     <input
@@ -195,18 +210,23 @@ const Adherence = () => {
                       value={formData.dose}
                       onChange={handleFormChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                      placeholder="e.g., 500mg, 10ml"
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 font-semibold mb-2">Tablets per Dose *</label>
-                    <input
-                      type="number"
-                      min="1"
-                      name="tabletsPerDose"
-                      value={formData.tabletsPerDose}
+                    <label className="block text-gray-700 font-semibold mb-2">Instruction *</label>
+                    <select
+                      name="instruction"
+                      value={formData.instruction}
                       onChange={handleFormChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                    />
+                    >
+                      {instructionOptions.map((option) => (
+                        <option key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">Times per Day *</label>
@@ -305,6 +325,7 @@ const Adherence = () => {
                         <td className="px-4 py-3 text-gray-800">
                           <div className="font-semibold">{course.medicineName}</div>
                           <div className="text-xs text-gray-500">{course.dose}</div>
+                          <div className="text-xs text-blue-600 mt-1">{course.instruction || 'After meals'}</div>
                         </td>
                         <td className="px-4 py-3 text-gray-700">{course.remainingTablets}</td>
                         <td className="px-4 py-3 text-gray-700">{course.daysLeft}</td>

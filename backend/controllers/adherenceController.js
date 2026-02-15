@@ -41,6 +41,7 @@ exports.addCourse = async (req, res) => {
     const {
       medicineName,
       dose,
+      instruction,
       tabletsPerDose,
       timesPerDay,
       startDate,
@@ -59,6 +60,7 @@ exports.addCourse = async (req, res) => {
       userId: req.user.id,
       medicineName,
       dose,
+      instruction: instruction || 'After meals',
       tabletsPerDose,
       timesPerDay,
       startDate: new Date(startDate),

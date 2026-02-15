@@ -75,22 +75,22 @@ const AddMedicine = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 py-6 md:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Add New Medicine</h1>
+        <div className="bg-white rounded-lg shadow-md p-6 md:p-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">Add New Medicine</h1>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded text-sm">
                 {error}
               </div>
             )}
 
             {/* Basic Information */}
             <div>
-              <h3 className="text-xl font-semibold mb-4">Basic Information</h3>
-              <div className="grid md:grid-cols-2 gap-6">
+              <h3 className="text-lg md:text-xl font-semibold mb-4">Basic Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Medicine Name *

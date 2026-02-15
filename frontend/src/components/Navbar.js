@@ -1,244 +1,232 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const togglerRef = useRef(null);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const handleLogout = () => {
     logout();
-    setIsMenuOpen(false);
+    setShowProfileMenu(false);
     navigate('/login');
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-    if (togglerRef.current) {
-      togglerRef.current.focus();
-    }
-  };
-
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm fixed-top">
-      <div className="container-fluid">
-        
-        {/* LOGO - Left */}
-        <Link to="/" className="navbar-brand">
-          <span className="fw-bold" style={{ fontSize: '1.5rem', color: '#0066cc' }}>
-            Analyx
-          </span>
-          <span className="ms-2 d-none d-lg-inline" style={{ fontSize: '0.85rem', color: '#666' }}>
-            Drug Scanner
-          </span>
-        </Link>
-
-        {/* NAVIGATION TABS - Center (Desktop Only) */}
-        <div className="navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            {!user ? (
-              <>
-                <li className="nav-item">
-                  <Link to="/search" className="nav-link">Search Medicines</Link>
-                </li>
-                <li className="nav-item">
-                  <Link to="/login" className="nav-link">Login</Link>
-                </li>
-                <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Register
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li><Link to="/register/user" className="dropdown-item">As User</Link></li>
-                    <li><Link to="/register/pharmacy" className="dropdown-item">As Pharmacy</Link></li>
-                  </ul>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <Link to="/search" className="nav-link">Search Medicines</Link>
-                </li>
-                {user.role === 'user' && (
-                  <>
-                    <li className="nav-item">
-                      <Link to="/user/dashboard" className="nav-link">Dashboard</Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/user/adherence" className="nav-link">Adherence</Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/user/prescriptions" className="nav-link">Prescription</Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/user/pharmacies" className="nav-link">Pharmacies</Link>
-                    </li>
-                  </>
-                )}
-                {user.role === 'pharmacy' && (
-                  <>
-                    <li className="nav-item">
-                      <Link to="/pharmacy/dashboard" className="nav-link">Dashboard</Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/pharmacy/medicines" className="nav-link">Medicines</Link>
-                    </li>
-                  </>
-                )}
-                {user.role === 'admin' && (
-                  <>
-                    <li className="nav-item">
-                      <Link to="/admin/dashboard" className="nav-link">Dashboard</Link>
-                    </li>
-                    <li className="nav-item">
-                      <Link to="/admin/pharmacies/pending" className="nav-link">Pending Pharmacies</Link>
-                    </li>
-                  </>
-                )}
-              </>
-            )}
-          </ul>
-        </div>
-
-        {/* PROFILE ICON + HAMBURGER - Right */}
-        <div className="d-flex align-items-center gap-2">
+    <>
+      {/* Fixed Header - Hidden on mobile, visible on desktop */}
+      <div className="hidden md:block fixed top-0 left-0 right-0 bg-white shadow-sm z-50 h-20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 h-full flex items-center justify-between">
           
-          {/* Profile Dropdown */}
+          {/* Logo - Left */}
+          <Link to="/" className="flex items-center gap-2">
+            <span className="text-2xl font-bold" style={{ color: '#0066cc' }}>
+              Analyx
+            </span>
+            <span className="text-sm" style={{ color: '#666' }}>
+              Drug Scanner
+            </span>
+          </Link>
+
+          {/* Navigation Tabs - Center (only when logged in) */}
           {user && (
-            <div className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle d-flex align-items-center p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <div className="rounded-circle d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px', backgroundColor: '#0066cc', color: 'white', fontWeight: 'bold', fontSize: '1rem' }}>
-                  {user.fullName?.charAt(0)?.toUpperCase()}
-                </div>
-              </a>
-              <ul className="dropdown-menu dropdown-menu-end">
-                {user.role === 'user' && (
-                  <li><Link to="/user/profile" className="dropdown-item">My Profile</Link></li>
-                )}
-                {user.role === 'pharmacy' && (
-                  <li><Link to="/pharmacy/profile" className="dropdown-item">My Profile</Link></li>
-                )}
-                {user.role === 'admin' && (
-                  <li><span className="dropdown-item">Admin Panel</span></li>
-                )}
-                <li><hr className="dropdown-divider" /></li>
-                <li><button className="dropdown-item" onClick={handleLogout}>Logout</button></li>
-              </ul>
+            <div className="hidden lg:flex items-center gap-6">
+              <Link to="/search" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                Search Medicines
+              </Link>
+              {user.role === 'user' && (
+                <>
+                  <Link to="/user/dashboard" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Dashboard
+                  </Link>
+                  <Link to="/user/adherence" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Adherence
+                  </Link>
+                  <Link to="/user/prescriptions" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Prescriptions
+                  </Link>
+                  <Link to="/user/pharmacies" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Pharmacies
+                  </Link>
+                </>
+              )}
+              {user.role === 'pharmacy' && (
+                <>
+                  <Link to="/pharmacy/dashboard" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Dashboard
+                  </Link>
+                  <Link to="/pharmacy/medicines" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Medicines
+                  </Link>
+                  <Link to="/pharmacy/stock" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Stock
+                  </Link>
+                </>
+              )}
+              {user.role === 'admin' && (
+                <>
+                  <Link to="/admin/dashboard" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Dashboard
+                  </Link>
+                  <Link to="/admin/pharmacies/pending" className="text-gray-700 hover:text-blue-600 text-sm font-medium transition">
+                    Pending Pharmacies
+                  </Link>
+                </>
+              )}
             </div>
           )}
 
-          {/* Hamburger Toggle - Mobile Only */}
-          <button
-            className="navbar-toggler"
-            type="button"
-            aria-controls="drawerNav"
-            aria-expanded={isMenuOpen}
-            aria-label="Toggle navigation"
-            onClick={toggleMenu}
-            ref={togglerRef}
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-        </div>
+          {/* Profile Icon - Right */}
+          <div className="relative">
+            {user ? (
+              <>
+                <button
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  className="w-12 h-12 rounded-full flex items-center justify-center font-bold text-white transition-transform hover:scale-110"
+                  style={{ backgroundColor: '#0066cc' }}
+                >
+                  {user.fullName?.charAt(0)?.toUpperCase()}
+                </button>
 
-        {/* DRAWER MENU - Mobile Only */}
-        <div
-          className={`drawer drawer-end${isMenuOpen ? ' show' : ''}`}
-          tabIndex="-1"
-          id="drawerNav"
-          aria-labelledby="drawerNavLabel"
-          aria-modal={isMenuOpen ? 'true' : undefined}
-        >
-          <div className="offcanvas-header">
-            <h5 className="offcanvas-title" id="drawerNavLabel">
-              <span style={{ color: '#0066cc', fontWeight: 'bold' }}>Analyx</span>
-            </h5>
-            <button
-              type="button"
-              className="btn-close"
-              aria-label="Close"
-              onClick={closeMenu}
-            ></button>
-          </div>
-
-          <div className="offcanvas-body">
-            <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
-              {!user ? (
-                <>
-                  <li className="nav-item">
-                    <Link to="/search" className="nav-link" onClick={closeMenu}>Search Medicines</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to="/login" className="nav-link" onClick={closeMenu}>Login</Link>
-                  </li>
-                  <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Register
-                    </a>
-                    <ul className="dropdown-menu dropdown-menu-end">
-                      <li><Link to="/register/user" className="dropdown-item" onClick={closeMenu}>As User</Link></li>
-                      <li><Link to="/register/pharmacy" className="dropdown-item" onClick={closeMenu}>As Pharmacy</Link></li>
-                    </ul>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="nav-item">
-                    <Link to="/search" className="nav-link" onClick={closeMenu}>Search Medicines</Link>
-                  </li>
-                  {user.role === 'user' && (
-                    <>
-                      <li className="nav-item">
-                        <Link to="/user/dashboard" className="nav-link" onClick={closeMenu}>Dashboard</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/user/adherence" className="nav-link" onClick={closeMenu}>Adherence</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/user/prescriptions" className="nav-link" onClick={closeMenu}>Prescription</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/user/pharmacies" className="nav-link" onClick={closeMenu}>Pharmacies</Link>
-                      </li>
-                    </>
-                  )}
-                  {user.role === 'pharmacy' && (
-                    <>
-                      <li className="nav-item">
-                        <Link to="/pharmacy/dashboard" className="nav-link" onClick={closeMenu}>Dashboard</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/pharmacy/medicines" className="nav-link" onClick={closeMenu}>Medicines</Link>
-                      </li>
-                    </>
-                  )}
-                  {user.role === 'admin' && (
-                    <>
-                      <li className="nav-item">
-                        <Link to="/admin/dashboard" className="nav-link" onClick={closeMenu}>Dashboard</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link to="/admin/pharmacies/pending" className="nav-link" onClick={closeMenu}>Pending Pharmacies</Link>
-                      </li>
-                    </>
-                  )}
-                </>
-              )}
-            </ul>
+                {/* Profile Dropdown Menu */}
+                {showProfileMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    {user.role === 'user' && (
+                      <Link
+                        to="/user/profile"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                        onClick={() => setShowProfileMenu(false)}
+                      >
+                        My Profile
+                      </Link>
+                    )}
+                    {user.role === 'pharmacy' && (
+                      <Link
+                        to="/pharmacy/profile"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                        onClick={() => setShowProfileMenu(false)}
+                      >
+                        My Profile
+                      </Link>
+                    )}
+                    {user.role === 'admin' && (
+                      <div className="px-4 py-2 text-gray-700 text-sm font-medium">
+                        Admin Panel
+                      </div>
+                    )}
+                    <hr className="my-1" />
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 text-sm"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex gap-2">
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-blue-600 hover:text-blue-700 text-sm font-medium"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register/user"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
           </div>
         </div>
-
-        {isMenuOpen && (
-          <div className="drawer-backdrop fade show" onClick={closeMenu}></div>
-        )}
       </div>
-    </nav>
+
+      {/* Mobile Header - Logo and Profile only, visible on mobile */}
+      <div className="md:hidden fixed top-0 left-0 right-0 bg-white shadow-sm z-50 h-16">
+        <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+          
+          {/* Logo - Left */}
+          <Link to="/" className="flex items-center gap-2">
+            <span className="text-xl font-bold" style={{ color: '#0066cc' }}>
+              Analyx
+            </span>
+          </Link>
+
+          {/* Profile Icon - Right */}
+          <div className="relative">
+            {user ? (
+              <>
+                <button
+                  onClick={() => setShowProfileMenu(!showProfileMenu)}
+                  className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-transform hover:scale-110"
+                  style={{ backgroundColor: '#0066cc' }}
+                >
+                  {user.fullName?.charAt(0)?.toUpperCase()}
+                </button>
+
+                {/* Profile Dropdown Menu */}
+                {showProfileMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    {user.role === 'user' && (
+                      <Link
+                        to="/user/profile"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                        onClick={() => setShowProfileMenu(false)}
+                      >
+                        My Profile
+                      </Link>
+                    )}
+                    {user.role === 'pharmacy' && (
+                      <Link
+                        to="/pharmacy/profile"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100 text-sm"
+                        onClick={() => setShowProfileMenu(false)}
+                      >
+                        My Profile
+                      </Link>
+                    )}
+                    {user.role === 'admin' && (
+                      <div className="px-4 py-2 text-gray-700 text-sm font-medium">
+                        Admin Panel
+                      </div>
+                    )}
+                    <hr className="my-1" />
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 text-sm"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex gap-2">
+                <Link
+                  to="/login"
+                  className="px-2 md:px-4 py-2 text-blue-600 hover:text-blue-700 text-xs md:text-sm font-medium"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register/user"
+                  className="px-2 md:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-xs md:text-sm font-medium"
+                >
+                  Register
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Top padding spacer for fixed header */}
+      <div className="h-16 md:h-20"></div>
+    </>
   );
 };
 

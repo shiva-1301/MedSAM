@@ -88,50 +88,75 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gray-50 md:bg-gradient-to-br md:from-blue-50 md:to-indigo-100 py-4 md:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
         {/* System Overview Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 md:gap-4">
           {/* Total Users */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Total Users</p>
-            <h2 className="text-3xl font-bold text-blue-600">{stats?.totalUsers || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Platform growth</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Total Users</p>
+                <p className="text-xs text-gray-400 md:hidden">Platform</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-blue-600">{stats?.totalUsers || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Platform growth</p>
           </div>
 
           {/* Total Pharmacies */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Total Pharmacies</p>
-            <h2 className="text-3xl font-bold text-blue-600">{stats?.totalPharmacies || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Marketplace size</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Total Pharmacies</p>
+                <p className="text-xs text-gray-400 md:hidden">Network</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-blue-600">{stats?.totalPharmacies || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Marketplace size</p>
           </div>
 
           {/* Approved Pharmacies */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Approved Pharmacies</p>
-            <h2 className="text-3xl font-bold text-green-600">{stats?.approvedPharmacies || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Verified</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Approved</p>
+                <p className="text-xs text-gray-400 md:hidden">Verified</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-green-600">{stats?.approvedPharmacies || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Verified</p>
           </div>
 
           {/* Pending Approvals */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Pending Approvals</p>
-            <h2 className="text-3xl font-bold text-yellow-600">{stats?.pendingPharmacies || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Needs action</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Pending</p>
+                <p className="text-xs text-gray-400 md:hidden">Action</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-yellow-600">{stats?.pendingPharmacies || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Needs action</p>
           </div>
 
           {/* Total Medicines */}
-          <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition">
-            <p className="text-sm text-gray-600 mb-1">Total Medicines</p>
-            <h2 className="text-3xl font-bold text-purple-600">{stats?.totalMedicines || 0}</h2>
-            <p className="text-xs text-gray-500 mt-2">Inventory scale</p>
+          <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg hover:shadow-xl transition active:scale-[0.98] md:active:scale-100">
+            <div className="flex items-center justify-between md:block">
+              <div>
+                <p className="text-sm font-medium text-gray-500">Medicines</p>
+                <p className="text-xs text-gray-400 md:hidden">Inventory</p>
+              </div>
+              <h2 className="text-2xl md:text-3xl font-bold text-purple-600">{stats?.totalMedicines || 0}</h2>
+            </div>
+            <p className="hidden md:block text-xs text-gray-500 mt-2">Inventory scale</p>
           </div>
         </div>
 
         {/* Two Column Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
           {/* Pending Pharmacy Approvals (2/3 width) */}
-          <div className="lg:col-span-2 bg-white rounded-2xl p-6 shadow-lg">
+          <div className="lg:col-span-2 bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-6 shadow-sm md:shadow-lg">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-gray-800">Pending Pharmacy Approvals</h3>
               <Link to="/admin/pharmacies/pending" className="text-sm text-blue-600 hover:text-blue-700">
@@ -196,9 +221,9 @@ const AdminDashboard = () => {
           </div>
 
           {/* Right Column - System Health & Activity (1/3 width) */}
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             {/* System Health */}
-            <div className="bg-white rounded-2xl p-5 shadow-lg">
+            <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg">
               <h4 className="text-sm font-semibold text-gray-800 mb-3">System Health</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between items-center">
@@ -217,7 +242,7 @@ const AdminDashboard = () => {
             </div>
 
             {/* Recent Activity */}
-            <div className="bg-white rounded-2xl p-5 shadow-lg">
+            <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-5 shadow-sm md:shadow-lg">
               <h4 className="text-sm font-semibold text-gray-800 mb-3">Recent Activity</h4>
               <div className="space-y-3">
                 {recentActivity.map((activity, index) => (
@@ -232,7 +257,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Recent Registrations Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-lg">
+        <div className="bg-white border border-gray-100 rounded-lg md:rounded-2xl p-4 md:p-6 shadow-sm md:shadow-lg">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Registrations</h3>
           
           <div className="grid md:grid-cols-2 gap-6">

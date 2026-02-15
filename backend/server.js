@@ -17,7 +17,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: ['https://medsam-1.onrender.com', 'http://localhost:3000'],
+  origin: ['https://medsam-1.onrender.com', 'http://localhost:3000', 'http://localhost:3001'],
   credentials: true
 }));
 app.use(express.json());

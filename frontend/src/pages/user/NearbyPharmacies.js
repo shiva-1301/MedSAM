@@ -91,29 +91,29 @@ const NearbyPharmacies = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-100 p-4 md:p-6 lg:p-8">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
             🏥 Nearby Pharmacies
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-sm md:text-base">
             Find verified pharmacies near your location
           </p>
         </div>
 
         {/* Alerts */}
         {error && (
-          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
             {error}
           </div>
         )}
 
         {/* Location Status and Controls */}
         {locationFetched && userLocation && (
-          <div className="mb-6 bg-white rounded-lg shadow-md p-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mb-6 bg-white rounded-lg shadow-md p-4 md:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
               <div>
                 <p className="text-gray-600 text-sm font-semibold mb-1">
                   Your Location
@@ -156,7 +156,7 @@ const NearbyPharmacies = () => {
           <div className="mb-6 text-center">
             <button
               onClick={getUserLocation}
-              className="px-8 py-3 bg-green-600 text-white text-lg rounded-lg hover:bg-green-700 transition font-semibold"
+              className="px-6 md:px-8 py-2 md:py-3 bg-green-600 text-white text-sm md:text-base rounded-lg hover:bg-green-700 transition font-semibold w-full md:w-auto"
             >
               📍 Get My Location
             </button>
@@ -169,14 +169,14 @@ const NearbyPharmacies = () => {
             <div className="inline-block animate-spin">
               <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full"></div>
             </div>
-            <p className="text-gray-600 mt-4">Finding nearby pharmacies...</p>
+            <p className="text-gray-600 mt-4 text-sm md:text-base">Finding nearby pharmacies...</p>
           </div>
         ) : pharmacies.length > 0 ? (
           <>
-            <div className="mb-6 text-gray-700 text-lg font-semibold">
+            <div className="mb-6 text-gray-700 text-base md:text-lg font-semibold">
               Found {pharmacies.length} pharmacies within {radiusKm} km
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {pharmacies.map((pharmacy) => (
                 <div
                   key={pharmacy._id}

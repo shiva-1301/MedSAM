@@ -32,12 +32,13 @@ import PendingPharmacies from './pages/admin/PendingPharmacies';
 // Components
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
+import MobileFooterNav from './components/MobileFooterNav';
 
 function App() {
   return (
     <AuthProvider>
       <Router>
-        <div className="min-h-screen bg-gray-50">
+        <div className="min-h-screen bg-gray-50 pb-24 md:pb-0">
           <Navbar />
           <Routes>
             {/* Public Routes */}
@@ -168,6 +169,7 @@ function App() {
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <MobileFooterNav />
         </div>
       </Router>
     </AuthProvider>

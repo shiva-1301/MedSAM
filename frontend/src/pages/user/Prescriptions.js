@@ -125,34 +125,58 @@ const Prescriptions = () => {
   };
 
   // Handle download prescription
-  const handleDownload = (fileUrl, doctorName) => {
-    const link = document.createElement('a');
-    link.href = fileUrl;
-    link.download = `Prescription_${doctorName}_${new Date().getTime()}`;
-    link.click();
+  const handleDownload = async (fileUrl, doctorName) => {
+    try {
+      const backendURL = process.env.REACT_APP_API_URL?.replace('/api', '') || 'http://localhost:5000';
+      const cleanFileUrl = fileUrl.startsWith('/') ? fileUrl : `/${fileUrl}`;
+      const fullUrl = `${backendURL}${cleanFileUrl}`;
+      
+      // Fetch the file as a blob
+      const response = await fetch(fullUrl);
+      if (!response.ok) {
+        throw new Error('Failed to download prescription');
+      }
+      
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      
+      // Create download link and trigger it
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `Prescription_${doctorName}_${new Date().getTime()}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      // Cleanup blob URL
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Download error:', error);
+      alert('Failed to download prescription. Please try again.');
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
-            Digital Prescriptions
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">
+            Medical Prescriptions
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-sm md:text-base">
             Upload and manage your medical prescriptions
           </p>
         </div>
 
         {/* Alerts */}
         {error && (
-          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-800 rounded">
             {error}
           </div>
         )}
         {success && (
-          <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+          <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-800 rounded">
             {success}
           </div>
         )}
@@ -160,7 +184,7 @@ const Prescriptions = () => {
         {/* Upload Button */}
         <button
           onClick={() => setShowUploadForm(!showUploadForm)}
-          className="mb-6 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold"
+          className="mb-6 px-4 md:px-6 py-2 md:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm text-sm md:text-base w-full md:w-auto"
         >
           {showUploadForm ? 'Cancel' : '+ Upload Prescription'}
         </button>
@@ -169,11 +193,11 @@ const Prescriptions = () => {
         {showUploadForm && (
           <form
             onSubmit={handleUpload}
-            className="mb-6 bg-white rounded-lg shadow-md p-6"
+            className="mb-6 bg-white rounded-lg shadow-md p-4 md:p-6"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm md:text-base">
                   Doctor Name *
                 </label>
                 <input
@@ -182,11 +206,11 @@ const Prescriptions = () => {
                   value={formData.doctorName}
                   onChange={handleFormChange}
                   placeholder="e.g., Dr. John Smith"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm md:text-base">
                   Doctor Contact *
                 </label>
                 <input
@@ -195,11 +219,11 @@ const Prescriptions = () => {
                   value={formData.doctorContact}
                   onChange={handleFormChange}
                   placeholder="e.g., +1-800-123-4567"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm md:text-base">
                   Hospital/Clinic Name *
                 </label>
                 <input
@@ -208,11 +232,11 @@ const Prescriptions = () => {
                   value={formData.hospitalName}
                   onChange={handleFormChange}
                   placeholder="e.g., City Medical Center"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm md:text-base">
                   Visit Date *
                 </label>
                 <input
@@ -220,11 +244,11 @@ const Prescriptions = () => {
                   name="visitDate"
                   value={formData.visitDate}
                   onChange={handleFormChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm md:text-base">
                   Notes
                 </label>
                 <textarea
@@ -233,11 +257,11 @@ const Prescriptions = () => {
                   onChange={handleFormChange}
                   placeholder="Any additional notes (optional)"
                   rows="2"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-gray-700 font-semibold mb-2">
+                <label className="block text-gray-700 font-semibold mb-2 text-sm md:text-base">
                   Upload File (PDF, JPEG, PNG) - Max 5MB *
                 </label>
                 <input
@@ -245,10 +269,10 @@ const Prescriptions = () => {
                   name="file"
                   onChange={handleFormChange}
                   accept=".pdf,.jpeg,.jpg,.png"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-3 md:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 {formData.file && (
-                  <p className="text-sm text-green-600 mt-2">
+                  <p className="text-sm text-blue-600 mt-2">
                     Selected: {formData.file.name}
                   </p>
                 )}
@@ -256,7 +280,7 @@ const Prescriptions = () => {
             </div>
             <button
               type="submit"
-              className="mt-4 w-full px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold"
+              className="mt-4 w-full px-6 py-2 md:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium shadow-sm text-sm md:text-base"
             >
               Upload Prescription
             </button>
@@ -265,46 +289,52 @@ const Prescriptions = () => {
 
         {/* Prescriptions List */}
         {loading ? (
-          <div className="text-center py-8">
+          <div className="text-center py-12">
             <div className="inline-block animate-spin">
-              <div className="w-8 h-8 border-4 border-green-600 border-t-transparent rounded-full"></div>
+              <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full"></div>
             </div>
+            <p className="text-gray-600 mt-4">Loading prescriptions...</p>
           </div>
         ) : prescriptions.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {prescriptions.map((prescription) => (
               <div
                 key={prescription._id}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition"
+                className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 hover:shadow-md transition"
               >
                 <div className="mb-4">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-3">
                     {prescription.doctorName}
                   </h3>
-                  <p className="text-yellow-600 font-semibold mb-2">
-                    📍 {prescription.hospitalName}
-                  </p>
-                  <div className="text-sm text-gray-600 space-y-1">
-                    <p>
-                      <strong>Contact:</strong> {prescription.doctorContact}
-                    </p>
-                    <p>
-                      <strong>Visit Date:</strong>{' '}
-                      {new Date(prescription.visitDate).toLocaleDateString()}
-                    </p>
-                    <p>
-                      <strong>File Type:</strong>{' '}
-                      <span className="uppercase">{prescription.fileType}</span>
-                    </p>
+                  <div className="space-y-2">
+                    <div className="flex items-start flex-col md:flex-row">
+                      <span className="text-gray-500 text-xs md:text-sm font-medium md:w-24">Hospital:</span>
+                      <span className="text-gray-700 text-xs md:text-sm flex-1">{prescription.hospitalName}</span>
+                    </div>
+                    <div className="flex items-start flex-col md:flex-row">
+                      <span className="text-gray-500 text-xs md:text-sm font-medium md:w-24">Contact:</span>
+                      <span className="text-gray-700 text-xs md:text-sm flex-1">{prescription.doctorContact}</span>
+                    </div>
+                    <div className="flex items-start flex-col md:flex-row">
+                      <span className="text-gray-500 text-xs md:text-sm font-medium md:w-24">Visit Date:</span>
+                      <span className="text-gray-700 text-xs md:text-sm flex-1">
+                        {new Date(prescription.visitDate).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex items-start flex-col md:flex-row">
+                      <span className="text-gray-500 text-xs md:text-sm font-medium md:w-24">File Type:</span>
+                      <span className="text-gray-700 text-xs md:text-sm uppercase flex-1">{prescription.fileType}</span>
+                    </div>
                   </div>
                   {prescription.notes && (
-                    <p className="text-sm text-gray-700 mt-3 bg-gray-50 p-3 rounded">
-                      <strong>Notes:</strong> {prescription.notes}
-                    </p>
+                    <div className="mt-3 p-3 bg-gray-50 rounded border border-gray-200">
+                      <p className="text-xs font-medium text-gray-500 mb-1">Notes:</p>
+                      <p className="text-sm text-gray-700">{prescription.notes}</p>
+                    </div>
                   )}
                 </div>
 
-                <div className="flex gap-2 pt-4 border-t">
+                <div className="flex flex-col md:flex-row gap-2 md:gap-3 pt-4 border-t border-gray-200">
                   <button
                     onClick={() =>
                       handleDownload(
@@ -312,23 +342,29 @@ const Prescriptions = () => {
                         prescription.doctorName
                       )
                     }
-                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold text-sm"
+                    className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium text-xs md:text-sm"
                   >
-                    📥 Download
+                    Download
                   </button>
                   <button
                     onClick={() => handleDelete(prescription._id)}
-                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-semibold text-sm"
+                    className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-xs md:text-sm"
                   >
-                    🗑️ Delete
+                    Delete
                   </button>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-md p-8 text-center">
-            <p className="text-gray-600 text-lg">No prescriptions uploaded yet</p>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 md:p-12 text-center">
+            <div className="text-gray-400 mb-4">
+              <svg className="w-12 md:w-16 h-12 md:h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <p className="text-gray-600 text-lg font-medium">No prescriptions uploaded yet</p>
+            <p className="text-gray-500 text-sm mt-2">Click the button above to upload your first prescription</p>
           </div>
         )}
       </div>

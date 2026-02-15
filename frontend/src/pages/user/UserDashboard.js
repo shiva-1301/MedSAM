@@ -55,8 +55,8 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-6 md:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
         {/* Hero Summary Card */}
         <div className="bg-white rounded-2xl p-6 shadow-lg">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -233,8 +233,8 @@ const UserDashboard = () => {
           )}
         </div>
 
-        {/* Quick Actions Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Quick Actions Grid - Footer style on mobile */}
+        <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             to="/user/adherence"
             className="bg-white rounded-xl p-5 hover:shadow-xl transition cursor-pointer shadow-lg group"
@@ -271,6 +271,7 @@ const UserDashboard = () => {
             <p className="text-gray-500 text-xs mt-1">Store digitally</p>
           </Link>
         </div>
+        
       </div>
     </div>
   );

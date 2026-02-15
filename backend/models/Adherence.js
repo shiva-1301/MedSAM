@@ -17,6 +17,11 @@ const adherenceSchema = new mongoose.Schema(
       required: [true, 'Dose is required'],
       trim: true,
     },
+    instruction: {
+      type: String,
+      default: 'After meals',
+      trim: true,
+    },
     tabletsPerDose: {
       type: Number,
       required: [true, 'Tablets per dose is required'],
