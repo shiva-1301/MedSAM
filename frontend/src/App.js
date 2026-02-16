@@ -33,6 +33,7 @@ import PendingPharmacies from './pages/admin/PendingPharmacies';
 import PrivateRoute from './components/PrivateRoute';
 import Navbar from './components/Navbar';
 import MobileFooterNav from './components/MobileFooterNav';
+import MedicineScannerBot from './components/MedicineScannerBot';
 
 function App() {
   return (
@@ -170,6 +171,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           <MobileFooterNav />
+          <MedicineScannerBot />
         </div>
       </Router>
     </AuthProvider>
